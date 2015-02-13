@@ -1,0 +1,99 @@
+<head>
+	<script type="text/javascript">
+		document.getElementById('no-special-characters').onkeyup = function(event) {
+			this.value = this.value.replace(/[^a-z\d]/, '');
+		}
+	</script>
+	{% load staticfiles %}
+	<link href="{% static "css/bootstrap.css" %}" rel="stylesheet" media="screen">
+	<link href="{% static "css/bootstrap-theme.css" %}" rel="stylesheet" media="screen">
+
+</head>
+
+<body>
+
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Course Feedback</a>
+			</div>
+
+			<ul class="nav navbar-nav">
+				
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li class="active .align-right"><a href="{% url 'faculty:logout' %}">Logout</a></li>
+			</ul>
+		</nav>
+
+		<div class="container">
+			<h2>All Courses of your department</h2>
+
+			<form role="form" action="{% url 'faculty:index' %}" method="get">
+
+				<div class="form-group">
+					<label for="course_id">Course </label>
+					<select class="form-control" name = "course_id">
+						{% for course in courses %}
+						<option value="{{course.id}}">{{course.name}}</option>
+						{% endfor %}
+					</select>
+				</div>
+
+				<div class="form-group">
+					<button type="submit" class="btn btn-default">Show</button>
+				</div>
+			</form>
+			<h2>Add Questions:</h2>
+
+			<form role="form" action="{% url 'faculty:addQuestion' %}" method="post">
+			{% csrf_token %}
+				<div class="form-group">
+					<label for="course_id">Questions </label>
+					<select class="form-control" name = "question_id">
+						{% for question in questions %}
+						<option value="{{question.id}}">{{question.question}}</option>
+						{% endfor %}
+					</select>
+				</div>
+
+				<div class="form-group">
+					<button type="submit" class="btn btn-success">Add</button>
+				</div>
+			</form>
+			<h2>Your Questions</h2>
+			{% for question in my_questions %}
+			<ul>
+				<li>
+					<form role="form" method="post" action="">
+						{% csrf_token %}
+						<input type="hidden" name="id" value="{{question.id}}">
+						<input type="submit" value="remove" class="btn btn-warning">
+						{{question.question}} 
+					</form>
+				</li>
+			</ul>
+			{% endfor %}
+			{% if feedback %}
+			<h3>Feedback for the course : {{subject}}</h3>
+			<ul>
+				
+				<br />
+				<li>1 * {{count.0}}</li>
+				<li>2 * {{count.1}}</li>
+				<li>3 * {{count.2}}</li>
+				<li>4 * {{count.3}}</li>
+				<li>5 * {{count.4}}</li>
+			</ul>
+			<li> Average: {{average}} </li>
+			{% endif %}
+
+		</div>
+	</body>

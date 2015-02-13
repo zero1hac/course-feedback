@@ -1,0 +1,44 @@
+<head>
+	<script type="text/javascript">
+		document.getElementById('no-special-characters').onkeyup = function(event) {
+			this.value = this.value.replace(/[^a-z\d]/, '');
+		}
+	</script>
+	{% load staticfiles %}
+	<link href="{% static "css/bootstrap.css" %}" rel="stylesheet" media="screen">
+	<link href="{% static "css/bootstrap-theme.css" %}" rel="stylesheet" media="screen">
+</head>
+
+<body>
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Course Feedback</a>
+			</div>
+
+			<ul class="nav navbar-nav">
+				
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li class="active .align-right"><a href="{% url 'feedback:logout' %}">Logout</a></li>
+			</ul>
+		</nav>
+
+		<div class="container">
+			{% if message != "" %}
+				<h4 class="lead"><font color="green">{{message}}</font></h4>
+			{% endif %}
+			<button onclick="goBack()" class="btn btn-success">Go Back</button>
+
+		<script>
+			function goBack() {
+    			window.history.back()
+			}
+		</script>
